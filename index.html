@@ -161,6 +161,7 @@
                 }
                 else
                 {
+                        var answerDiv = document.createElement("div");
                         var button = document.createElement("button");
 
                         
@@ -173,10 +174,13 @@
                         
 
                         button.className = 'qobuttons';
-                        button.onclick = function() 
-                        {
-                            if (answerSpan.style.display == "none") answerSpan.style.display="block";
-                            else answerSpan.style.display = "none";
+                        
+
+                        button.onclick = function() {
+                        var parentDiv = this.parentNode;
+                        var nextSpan = parentDiv.querySelector("span");
+                        if (nextSpan.style.display == "none") nextSpan.style.display = "block";
+                        else nextSpan.style.display = "none";
                         };
 
                         answerDiv.className = "answerrowopen";
@@ -184,6 +188,8 @@
                         newDiv.appendChild(answerDiv);
                         answerDiv.appendChild(button);
                         answerDiv.appendChild(answerSpan);
+
+                        
                         
                 }
 
@@ -196,7 +202,36 @@
             textarea.value='';
         }
 
-        
+        function shuffleQuestions()
+        {
+            const divs = Array.from(document.querySelectorAll('.Question')); 
+            const parent = document.querySelector('#questions'); 
+ 
+
+
+            divs.sort(() => Math.random() - 0.5); 
+ 
+  
+            divs.forEach(div => { 
+                if (div!==parent)
+             parent.appendChild(div); 
+            }); 
+        }
+
+        function shuffleAnswers()
+        {
+            const answerRows = document.querySelectorAll('#questions .Question .answerrow');
+
+            answerRows.forEach(answerRow => {
+                const buttons = Array.from(answerRow.querySelectorAll('.qbuttons'));
+                
+                buttons.sort(() => Math.random() - 0.5);
+
+                buttons.forEach(button => {
+                    answerRow.appendChild(button);
+                });
+            })
+        }
 
 
         
@@ -204,9 +239,11 @@
     <div id="container">
         <label for="text" id="header" style="font-size: 30pt";>Your questions:</label>
         <br>
-        <textarea id="firstbox" name="text" rows="2" cols="50" placeholder="Question 1&#10;Wrong answer&#10;*Correct answer (must start with *)&#10;&#10;Question 2&#10;Wrong answer&#10;*Correct answer&#10;*Correct answer (supports multiple correct answers)&#10;&#10;Question 3&#10;Answer&#10;Answer&#10;.&#10;.      //supports infinite amount of answers&#10;.&#10;Answer&#10;&#10;----------------------------------------------------------&#10;SUPPORTS OPEN QUESTIONS AS FOLLOWS:&#10;&#10;Question&#10;Answer"></textarea>
+        <textarea id="firstbox" name="text" rows="2" cols="50" placeholder="Question 1&#10;Wrong answer&#10;*Correct answer (must start with *)&#10;&#10;Question 2&#10;Wrong answer&#10;*Correct answer&#10;*Correct answer (supports multiple correct answers)&#10;&#10;Question 3&#10;Answer&#10;Answer&#10;.&#10;.      //supports infinite amount of answers&#10;.&#10;Answer&#10;&#10;-------------------------------------------------------------&#10;SUPPORTS OPEN QUESTIONS AS FOLLOWS:&#10;&#10;Question&#10;Answer"></textarea>
         <br/>
         <div id="firstbuttondiv"><input id="firstbuttonclick" onclick="getValue()" type="submit" value="Submit" id="submit"></div>
+        <div id="firstbuttondiv"><input id="firstbuttonclick" onclick="shuffleQuestions()" type="submit" value="Randomize questions" id="shuffle"></div>
+        <div id="firstbuttondiv"><input id="firstbuttonclick" onclick="shuffleAnswers()" type="submit" value="Randomize answers" id="shuffle"></div>
         
     </div>
 
