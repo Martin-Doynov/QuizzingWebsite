@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quizzing</title>
+    <style>
+        #container
+        {
+            margin:auto;
+        }
+
+        #header
+        {
+            margin:5px auto;
+            justify-content: center;
+            display:flex;
+        }
+
+        #firstbox
+        {
+            height:37vh;
+            width: 60vw;
+            font-size:10pt;
+            margin:auto;
+            display:flex;
+        }
+        
+        #firstbuttondiv
+        {
+            margin:auto;
+            display:flex;
+            justify-content: center;
+        }
+        
+        #firstbuttonclick
+        {
+            padding: 10px;
+        }
+        .Question
+        {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom:0.6rem;
+            font-size: 20px;
+        }
+
+        .qbuttons
+        {
+            display: flex;
+            justify-content: center;
+            gap: 10px; 
+            font-size:15px
+        }
+        .answerrow
+        {
+            display: flex;
+        }
+        .answerrowopen
+        {
+            display: inline-block;
+        }
+        .qobuttons
+        {
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        var text;
+        var questions;
+        
+        function getValue(){
+        text = document.getElementById("firstbox").value;
+        
+
+        var textarea = document.getElementById("firstbox");
+        textarea.style.height = "5vh";
+        // console.log(text);
+        questions = text.split('\n\n');
+        console.log(questions);
+
+        var questionlines = [];
+        // var onlyquestions = [];
+        // var onlyanswers = [[[]]];
+
+        for (let i=0;i<questions.length;i++)
+        {
+            questionlines = questions[i].split('\n');
+            console.log("lines",questionlines);
+            console.log("lineslength",questionlines.length);
+            // onlyanswers[i] = [];
+            if (questionlines.length!=2) //closed answers question
+            {
+
+            
+                var existingDiv = document.getElementById("questions");
+                var newDiv = document.createElement("div");
+                newDiv.id = "Q"+(i+1);
+                newDiv.className = "Question";
+
+                var answerDiv = document.createElement("div");
+                
+                
+                
+                existingDiv.appendChild(newDiv);
+                
+
+            for (let j=0; j<questionlines.length; j++) 
+            {
+                if(j==0)
+                {
+                    var textNode = document.createTextNode(questionlines[j]);
+                    newDiv.appendChild(textNode);
+                }
+                else
+                {
+                        var button = document.createElement("button");
+
+                        var isCorrect = questionlines[j].startsWith('*');
+                        var buttonText = isCorrect ? questionlines[j].substring(1) : questionlines[j];
+
+                        if (isCorrect) button.id = 'correct';
+
+                        button.className = 'qbuttons';
+                        button.onclick = function() 
+                        {
+                            this.style.backgroundColor = this.id === 'correct' ? 'green' : 'red';
+                        };
+
+                        answerDiv.className = "answerrow";
+                        button.innerHTML = buttonText;
+                        newDiv.appendChild(answerDiv);
+                        answerDiv.appendChild(button);
+                        
+                }
+
+                }
+            }
+            else if (questionlines.length==2) //open answer question
+            {
+                var existingDiv = document.getElementById("questions");
+                var newDiv = document.createElement("div");
+                newDiv.id = "Q"+(i+1);
+                newDiv.className = "Question";
+
+                var answerDiv = document.createElement("div");
+                
+                
+                
+                existingDiv.appendChild(newDiv);
+
+                for (let j=0; j<questionlines.length; j++) 
+            {
+                if(j==0)
+                {
+                    var textNode = document.createTextNode(questionlines[j]);
+                    newDiv.appendChild(textNode);
+                }
+                else
+                {
+                        var button = document.createElement("button");
+
+                        
+                        var buttonText = "Show answer";
+
+                        var answerSpan = document.createElement("span");
+                        answerSpan.style.display = "none";
+                        var answerTextNode = document.createTextNode(questionlines[j]);
+                        answerSpan.appendChild(answerTextNode);
+                        
+
+                        button.className = 'qobuttons';
+                        button.onclick = function() 
+                        {
+                            if (answerSpan.style.display == "none") answerSpan.style.display="block";
+                            else answerSpan.style.display = "none";
+                        };
+
+                        answerDiv.className = "answerrowopen";
+                        button.innerHTML = buttonText;
+                        newDiv.appendChild(answerDiv);
+                        answerDiv.appendChild(button);
+                        answerDiv.appendChild(answerSpan);
+                        
+                }
+
+                }
+            }
+                
+            }
+            // console.log("answ",onlyanswers);
+            // console.log("quest",onlyquestions);
+            textarea.value='';
+        }
+
+        
+
+
+        
+    </script>
+    <div id="container">
+        <label for="text" id="header" style="font-size: 30pt";>Your questions:</label>
+        <br>
+        <textarea id="firstbox" name="text" rows="2" cols="50" placeholder="Question 1&#10;Wrong answer&#10;*Correct answer (must start with *)&#10;&#10;Question 2&#10;Wrong answer&#10;*Correct answer&#10;*Correct answer (supports multiple correct answers)&#10;&#10;Question 3&#10;Answer&#10;Answer&#10;.&#10;.      //supports infinite amount of answers&#10;.&#10;Answer&#10;&#10;-------------------------------------------------------------&#10;SUPPORTS OPEN QUESTIONS AS FOLLOWS:&#10;&#10;Question&#10;Answer"></textarea>
+        <br/>
+        <div id="firstbuttondiv"><input id="firstbuttonclick" onclick="getValue()" type="submit" value="Submit" id="submit"></div>
+        
+    </div>
+
+    <div id="questions">
+
+    </div>
+ </form>
+</body>
+</html>
