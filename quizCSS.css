@@ -1,0 +1,60 @@
+#container
+{
+    margin:auto;
+}
+
+#header
+{
+    margin:5px auto;
+    justify-content: center;
+    display:flex;
+}
+
+#firstbox
+{
+    height:37vh;
+    width: 60vw;
+    font-size:10pt;
+    margin:auto;
+    display:flex;
+}
+
+#firstbuttondiv
+{
+    margin:auto;
+    display:flex;
+    justify-content: center;
+}
+
+#firstbuttonclick
+{
+    padding: 10px;
+}
+.Question
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom:0.6rem;
+    font-size: 20px;
+}
+
+.qbuttons
+{
+    display: flex;
+    justify-content: center;
+    gap: 10px; 
+    font-size:15px
+}
+.answerrow
+{
+    display: flex;
+}
+.answerrowopen
+{
+    display: inline-block;
+}
+.qobuttons
+{
+    padding: 10px;
+}
