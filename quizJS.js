@@ -1,5 +1,7 @@
 var text;
 var questions;
+var totalRows = 0;
+var incorrectRows = 0;
 
 function getValue(){
 text = document.getElementById("firstbox").value;
@@ -57,6 +59,11 @@ for (let i=0;i<questions.length;i++)
                 button.onclick = function() 
                 {
                     this.style.backgroundColor = this.id === 'correct' ? 'green' : 'red';
+                    if(this.id !== 'correct' && this.parentNode.getAttribute('data-incorrect-clicked') !== 'true') {
+                            incorrectRows++;
+                            this.parentNode.setAttribute('data-incorrect-clicked', 'true');
+                            updateScore();
+                    }
                 };
 
                 answerDiv.className = "answerrow";
@@ -129,7 +136,20 @@ for (let i=0;i<questions.length;i++)
     // console.log("answ",onlyanswers);
     // console.log("quest",onlyquestions);
     textarea.value='';
+
+    // Initialize totalRows with the number of questions
+    totalRows = questions.length;
+
+    updateScore();
 }
+
+function updateScore() {
+    var correctRows = totalRows - incorrectRows;
+    var percentage = totalRows > 0 ? (correctRows / totalRows) * 100 : 0;
+    var scoreDiv = document.getElementById('score');
+    scoreDiv.textContent = correctRows + "/" + totalRows + ", this is " + percentage.toFixed(2) + "% correct" + "\n" + incorrectRows + " wrong answers";
+}
+
 
 function shuffleQuestions()
 {
